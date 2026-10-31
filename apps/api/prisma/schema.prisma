@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/database/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TenantStatus {
+  ACTIVE
+  SUSPENDED
+  CLOSED
+}
+
+enum MembershipStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+}
+
+model Tenant {
+  id          String       @id @default(uuid()) @db.Uuid
+  name        String       @db.VarChar(160)
+  slug        String       @unique @db.VarChar(80)
+  status      TenantStatus @default(ACTIVE)
+  timezone    String       @default("Asia/Kolkata") @db.VarChar(64)
+  currency    String       @default("INR") @db.Char(3)
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  memberships Membership[]
+
+  @@map("tenants")
+}
+
+model User {
+  id              String       @id @default(uuid()) @db.Uuid
+  email           String       @unique @db.VarChar(320)
+  passwordHash    String       @map("password_hash") @db.VarChar(255)
+  displayName     String       @map("display_name") @db.VarChar(160)
+  emailVerifiedAt DateTime?    @map("email_verified_at") @db.Timestamptz(3)
+  isPlatformAdmin Boolean      @default(false) @map("is_platform_admin")
+  createdAt       DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  memberships     Membership[]
+
+  @@map("users")
+}
+
+model Membership {
+  id        String           @id @default(uuid()) @db.Uuid
+  tenantId  String           @map("tenant_id") @db.Uuid
+  userId    String           @map("user_id") @db.Uuid
+  status    MembershipStatus @default(INVITED)
+  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  tenant    Tenant           @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Restrict)
+  roles     MembershipRole[]
+
+  @@unique([tenantId, userId])
+  @@unique([tenantId, id])
+  @@index([userId, status])
+  @@map("memberships")
+}
+
+model Role {
+  id          String           @id @default(uuid()) @db.Uuid
+  tenantId    String?          @map("tenant_id") @db.Uuid
+  key         String           @db.VarChar(80)
+  name        String           @db.VarChar(120)
+  description String?          @db.VarChar(500)
+  assignments MembershipRole[]
+
+  @@unique([tenantId, key])
+  @@map("roles")
+}
+
+model Permission {
+  key         String           @id @db.VarChar(120)
+  description String?          @db.VarChar(500)
+  assignments RolePermission[]
+
+  @@map("permissions")
+}
+
+model MembershipRole {
+  tenantId     String     @map("tenant_id") @db.Uuid
+  membershipId String     @map("membership_id") @db.Uuid
+  roleId       String     @map("role_id") @db.Uuid
+  membership   Membership @relation(fields: [tenantId, membershipId], references: [tenantId, id], onDelete: Cascade)
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Restrict)
+
+  @@id([tenantId, membershipId, roleId])
+  @@map("membership_roles")
+}
+
+model RolePermission {
+  roleId       String     @map("role_id") @db.Uuid
+  permissionKey String    @map("permission_key") @db.VarChar(120)
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionKey], references: [key], onDelete: Restrict)
+
+  @@id([roleId, permissionKey])
+  @@map("role_permissions")
+}

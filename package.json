@@ -1,0 +1,22 @@
+{
+  "name": "brightloop-subscription-platform",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.20.0",
+  "engines": { "node": ">=20.19.0" },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @brightloop/web --filter @brightloop/api dev",
+    "dev:web": "pnpm --filter @brightloop/web dev",
+    "dev:api": "pnpm --filter @brightloop/api dev",
+    "dev:worker": "pnpm --filter @brightloop/worker dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "db:generate": "pnpm --filter @brightloop/api prisma:generate",
+    "db:migrate": "pnpm --filter @brightloop/api prisma:migrate",
+    "db:studio": "pnpm --filter @brightloop/api prisma:studio",
+    "infra:up": "docker compose up -d postgres redis",
+    "infra:down": "docker compose down"
+  },
+  "pnpm": { "onlyBuiltDependencies": ["@prisma/engines", "esbuild", "prisma"] }
+}

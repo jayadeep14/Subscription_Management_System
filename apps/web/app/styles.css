@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root { color-scheme: light; --ink: #17231f; --muted: #66736d; --line: #e3e9e4; --green: #17835d; --mint: #e9f5ee; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f7f9f6; color: var(--ink); font-family: 'DM Sans', sans-serif; }
+.shell { max-width: 1160px; margin: 0 auto; padding: 0 42px; }
+.topbar { height: 86px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 11px; font: 800 19px Manrope, sans-serif; letter-spacing: -.6px; }
+.brand-mark { width: 31px; height: 31px; border-radius: 10px; display: grid; place-items: center; color: white; background: var(--green); font-size: 16px; }
+.environment { color: #6f7d75; font-size: 12px; background: white; border: 1px solid var(--line); border-radius: 100px; padding: 8px 13px; }
+.hero { padding: 82px 0 61px; max-width: 730px; }
+.eyebrow { color: var(--green); font-weight: 700; font-size: 11px; letter-spacing: 1.7px; }
+h1 { max-width: 700px; margin: 17px 0 18px; font: 700 clamp(40px, 5vw, 62px)/1.08 Manrope, sans-serif; letter-spacing: -2.6px; }
+.intro { color: var(--muted); max-width: 610px; font-size: 17px; line-height: 1.7; }
+.status { display: inline-flex; align-items: center; gap: 9px; margin-top: 24px; padding: 11px 14px; border: 1px solid #cfe5d5; border-radius: 7px; background: #f0f8f1; color: #376e4b; font-size: 13px; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: #38995f; }
+.module-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.module-card { min-height: 168px; padding: 20px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+.module-number { color: #8a9a90; font: 600 11px Manrope, sans-serif; }
+.module-card h2 { margin: 22px 0 7px; font: 700 16px Manrope, sans-serif; }
+.module-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+footer { margin-top: 60px; padding: 20px 0 30px; border-top: 1px solid var(--line); color: #5d6a63; font-size: 12px; display: flex; justify-content: space-between; }
+footer span { color: #89948e; }
+@media (max-width: 750px) { .shell { padding: 0 22px; } .hero { padding: 59px 0 43px; } .module-grid { grid-template-columns: repeat(2, 1fr); } footer { gap: 9px; flex-direction: column; } }
+@media (max-width: 440px) { .module-grid { grid-template-columns: 1fr; } h1 { letter-spacing: -1.8px; } }
