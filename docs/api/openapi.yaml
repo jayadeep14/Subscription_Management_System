@@ -1,0 +1,95 @@
+openapi: 3.1.0
+info:
+  title: Brightloop Subscription Platform API
+  version: 1.0.0
+  description: Implemented API contract. Product modules listed in the roadmap are not exposed until implemented.
+servers:
+  - url: http://localhost:4000/api/v1
+security: []
+paths:
+  /health:
+    get:
+      summary: Process health
+      responses:
+        '200':
+          description: API process is responding; database and Redis readiness are not included.
+  /usage/events:
+    post:
+      summary: Ingest one usage event
+      description: Tenant is derived from X-API-Key. Raw events are append-only. Replays with matching content are accepted without a second aggregation increment.
+      security:
+        - TenantApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsageEvent'
+      responses:
+        '201':
+          description: Event accepted or recognized as a duplicate.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageAccepted'
+        '400': { description: Invalid request body }
+        '401': { description: Missing, expired, or revoked API key }
+        '403': { description: API key is valid but lacks the required usage scope }
+        '404': { description: Meter, subscription, or customer not found in this tenant }
+        '409': { description: Identifier reused with different content or invalid quantity }
+        '503': { description: Retryable serialization contention }
+  /usage/summary:
+    get:
+      summary: Retrieve usage and aggregate reconciliation
+      security:
+        - TenantApiKey: []
+      parameters:
+        - in: query
+          name: subscriptionId
+          required: true
+          schema: { type: string, format: uuid }
+        - in: query
+          name: meterId
+          required: true
+          schema: { type: string, format: uuid }
+        - in: query
+          name: from
+          required: true
+          schema: { type: string, format: date-time }
+        - in: query
+          name: to
+          required: true
+          schema: { type: string, format: date-time }
+      responses:
+        '200': { description: Raw quantity, daily aggregates, and raw-to-aggregate reconciliation when the range covers complete UTC days }
+        '400': { description: Invalid query parameters }
+        '401': { description: Missing, expired, or revoked API key }
+        '403': { description: API key is valid but lacks the required usage scope }
+components:
+  securitySchemes:
+    TenantApiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    UsageEvent:
+      type: object
+      additionalProperties: false
+      required: [eventId, customerId, subscriptionId, meterId, idempotencyKey, quantity, timestamp, source]
+      properties:
+        eventId: { type: string, maxLength: 255 }
+        customerId: { type: string, format: uuid }
+        subscriptionId: { type: string, format: uuid }
+        meterId: { type: string, format: uuid }
+        idempotencyKey: { type: string, maxLength: 255 }
+        quantity: { type: string, pattern: '^(?:0|[1-9][0-9]*)(?:\.[0-9]{1,8})?$' }
+        timestamp: { type: string, format: date-time }
+        source: { type: string, maxLength: 120 }
+        metadata: { type: object, additionalProperties: true }
+    UsageAccepted:
+      type: object
+      required: [accepted, duplicate, eventId]
+      properties:
+        accepted: { type: boolean }
+        duplicate: { type: boolean }
+        eventId: { type: string }

@@ -19,16 +19,48 @@ enum MembershipStatus {
   SUSPENDED
 }
 
+enum SubscriptionStatus {
+  DRAFT
+  PENDING
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  PAUSED
+  SUSPENDED
+  CANCELLED
+  EXPIRED
+}
+
+enum UsagePricingModel {
+  FLAT
+  TIERED
+  VOLUME
+  STAIR_STEP
+  PACKAGE
+}
+
+enum UsageAggregationGrain {
+  HOURLY
+  DAILY
+  BILLING_PERIOD
+}
+
 model Tenant {
-  id          String       @id @default(uuid()) @db.Uuid
-  name        String       @db.VarChar(160)
-  slug        String       @unique @db.VarChar(80)
-  status      TenantStatus @default(ACTIVE)
-  timezone    String       @default("Asia/Kolkata") @db.VarChar(64)
-  currency    String       @default("INR") @db.Char(3)
-  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
-  memberships Membership[]
+  id              String           @id @default(uuid()) @db.Uuid
+  name            String           @db.VarChar(160)
+  slug            String           @unique @db.VarChar(80)
+  status          TenantStatus     @default(ACTIVE)
+  timezone        String           @default("Asia/Kolkata") @db.VarChar(64)
+  currency        String           @default("INR") @db.Char(3)
+  createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  memberships     Membership[]
+  apiKeys         TenantApiKey[]
+  customers       Customer[]
+  subscriptions   Subscription[]
+  usageMeters     UsageMeter[]
+  usageEvents     UsageEvent[]
+  usageAggregates UsageAggregate[]
 
   @@map("tenants")
 }
@@ -45,6 +77,119 @@ model User {
   memberships     Membership[]
 
   @@map("users")
+}
+
+model TenantApiKey {
+  id        String    @id @default(uuid()) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  name      String    @db.VarChar(120)
+  keyHash   String    @unique @map("key_hash") @db.Char(64)
+  scopes    String[]  @default([])
+  expiresAt DateTime? @map("expires_at") @db.Timestamptz(3)
+  revokedAt DateTime? @map("revoked_at") @db.Timestamptz(3)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+
+  @@index([tenantId, revokedAt])
+  @@map("tenant_api_keys")
+}
+
+model Customer {
+  id            String         @id @default(uuid()) @db.Uuid
+  tenantId      String         @map("tenant_id") @db.Uuid
+  name          String         @db.VarChar(160)
+  email         String?        @db.VarChar(320)
+  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  tenant        Tenant         @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  subscriptions Subscription[]
+  usageEvents   UsageEvent[]
+
+  @@unique([tenantId, id])
+  @@index([tenantId, email])
+  @@map("customers")
+}
+
+model Subscription {
+  id                 String             @id @default(uuid()) @db.Uuid
+  tenantId           String             @map("tenant_id") @db.Uuid
+  customerId         String             @map("customer_id") @db.Uuid
+  status             SubscriptionStatus @default(DRAFT)
+  billingPeriodStart DateTime?          @map("billing_period_start") @db.Timestamptz(3)
+  billingPeriodEnd   DateTime?          @map("billing_period_end") @db.Timestamptz(3)
+  createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
+  tenant             Tenant             @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  customer           Customer           @relation(fields: [tenantId, customerId], references: [tenantId, id], onDelete: Restrict)
+  usageEvents        UsageEvent[]
+  usageAggregates    UsageAggregate[]
+
+  @@unique([tenantId, id])
+  @@index([tenantId, customerId, status])
+  @@map("subscriptions")
+}
+
+model UsageMeter {
+  id             String            @id @default(uuid()) @db.Uuid
+  tenantId       String            @map("tenant_id") @db.Uuid
+  code           String            @db.VarChar(100)
+  name           String            @db.VarChar(160)
+  unit           String            @db.VarChar(64)
+  pricingModel   UsagePricingModel @map("pricing_model")
+  unitPriceMinor BigInt            @default(0) @map("unit_price_minor")
+  currency       String            @default("INR") @db.Char(3)
+  tiers          Json?
+  active         Boolean           @default(true)
+  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  tenant         Tenant            @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  events         UsageEvent[]
+  aggregates     UsageAggregate[]
+
+  @@unique([tenantId, id])
+  @@unique([tenantId, code])
+  @@map("usage_meters")
+}
+
+model UsageEvent {
+  id             String       @id @default(uuid()) @db.Uuid
+  eventId        String       @unique @map("event_id") @db.VarChar(255)
+  tenantId       String       @map("tenant_id") @db.Uuid
+  customerId     String       @map("customer_id") @db.Uuid
+  subscriptionId String       @map("subscription_id") @db.Uuid
+  meterId        String       @map("meter_id") @db.Uuid
+  idempotencyKey String       @map("idempotency_key") @db.VarChar(255)
+  quantity       Decimal      @db.Decimal(24, 8)
+  occurredAt     DateTime     @map("occurred_at") @db.Timestamptz(3)
+  source         String       @db.VarChar(120)
+  metadata       Json?
+  receivedAt     DateTime     @default(now()) @map("received_at") @db.Timestamptz(3)
+  tenant         Tenant       @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  customer       Customer     @relation(fields: [tenantId, customerId], references: [tenantId, id], onDelete: Restrict)
+  subscription   Subscription @relation(fields: [tenantId, subscriptionId], references: [tenantId, id], onDelete: Restrict)
+  meter          UsageMeter   @relation(fields: [tenantId, meterId], references: [tenantId, id], onDelete: Restrict)
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, meterId, occurredAt])
+  @@index([tenantId, subscriptionId, occurredAt])
+  @@map("usage_events")
+}
+
+model UsageAggregate {
+  id             String                @id @default(uuid()) @db.Uuid
+  tenantId       String                @map("tenant_id") @db.Uuid
+  meterId        String                @map("meter_id") @db.Uuid
+  subscriptionId String                @map("subscription_id") @db.Uuid
+  grain          UsageAggregationGrain
+  periodStart    DateTime              @map("period_start") @db.Timestamptz(3)
+  periodEnd      DateTime              @map("period_end") @db.Timestamptz(3)
+  quantity       Decimal               @db.Decimal(28, 8)
+  eventCount     BigInt                @map("event_count")
+  computedAt     DateTime              @default(now()) @map("computed_at") @db.Timestamptz(3)
+  tenant         Tenant                @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  meter          UsageMeter            @relation(fields: [tenantId, meterId], references: [tenantId, id], onDelete: Restrict)
+  subscription   Subscription          @relation(fields: [tenantId, subscriptionId], references: [tenantId, id], onDelete: Restrict)
+
+  @@unique([tenantId, meterId, subscriptionId, grain, periodStart])
+  @@index([tenantId, subscriptionId, periodStart])
+  @@map("usage_aggregates")
 }
 
 model Membership {
@@ -96,10 +241,10 @@ model MembershipRole {
 }
 
 model RolePermission {
-  roleId       String     @map("role_id") @db.Uuid
-  permissionKey String    @map("permission_key") @db.VarChar(120)
-  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  permission   Permission @relation(fields: [permissionKey], references: [key], onDelete: Restrict)
+  roleId        String     @map("role_id") @db.Uuid
+  permissionKey String     @map("permission_key") @db.VarChar(120)
+  role          Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission    Permission @relation(fields: [permissionKey], references: [key], onDelete: Restrict)
 
   @@id([roleId, permissionKey])
   @@map("role_permissions")

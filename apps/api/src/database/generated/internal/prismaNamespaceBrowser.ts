@@ -17,8 +17,8 @@
 
 import * as runtime from "@prisma/client/runtime/index-browser"
 
-export type * from '../models'
-export type * from './prismaNamespace'
+export type * from '../models.js'
+export type * from './prismaNamespace.js'
 
 export const Decimal = runtime.Decimal
 
@@ -53,6 +53,12 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Tenant: 'Tenant',
   User: 'User',
+  TenantApiKey: 'TenantApiKey',
+  Customer: 'Customer',
+  Subscription: 'Subscription',
+  UsageMeter: 'UsageMeter',
+  UsageEvent: 'UsageEvent',
+  UsageAggregate: 'UsageAggregate',
   Membership: 'Membership',
   Role: 'Role',
   Permission: 'Permission',
@@ -102,6 +108,95 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const TenantApiKeyScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  keyHash: 'keyHash',
+  scopes: 'scopes',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type TenantApiKeyScalarFieldEnum = (typeof TenantApiKeyScalarFieldEnum)[keyof typeof TenantApiKeyScalarFieldEnum]
+
+
+export const CustomerScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  email: 'email',
+  createdAt: 'createdAt'
+} as const
+
+export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
+
+
+export const SubscriptionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  customerId: 'customerId',
+  status: 'status',
+  billingPeriodStart: 'billingPeriodStart',
+  billingPeriodEnd: 'billingPeriodEnd',
+  createdAt: 'createdAt'
+} as const
+
+export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
+
+
+export const UsageMeterScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
+  name: 'name',
+  unit: 'unit',
+  pricingModel: 'pricingModel',
+  unitPriceMinor: 'unitPriceMinor',
+  currency: 'currency',
+  tiers: 'tiers',
+  active: 'active',
+  createdAt: 'createdAt'
+} as const
+
+export type UsageMeterScalarFieldEnum = (typeof UsageMeterScalarFieldEnum)[keyof typeof UsageMeterScalarFieldEnum]
+
+
+export const UsageEventScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  tenantId: 'tenantId',
+  customerId: 'customerId',
+  subscriptionId: 'subscriptionId',
+  meterId: 'meterId',
+  idempotencyKey: 'idempotencyKey',
+  quantity: 'quantity',
+  occurredAt: 'occurredAt',
+  source: 'source',
+  metadata: 'metadata',
+  receivedAt: 'receivedAt'
+} as const
+
+export type UsageEventScalarFieldEnum = (typeof UsageEventScalarFieldEnum)[keyof typeof UsageEventScalarFieldEnum]
+
+
+export const UsageAggregateScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  meterId: 'meterId',
+  subscriptionId: 'subscriptionId',
+  grain: 'grain',
+  periodStart: 'periodStart',
+  periodEnd: 'periodEnd',
+  quantity: 'quantity',
+  eventCount: 'eventCount',
+  computedAt: 'computedAt'
+} as const
+
+export type UsageAggregateScalarFieldEnum = (typeof UsageAggregateScalarFieldEnum)[keyof typeof UsageAggregateScalarFieldEnum]
 
 
 export const MembershipScalarFieldEnum = {
@@ -159,6 +254,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -173,4 +276,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

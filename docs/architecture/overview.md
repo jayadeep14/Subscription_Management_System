@@ -22,6 +22,8 @@ Financial mutations will use PostgreSQL transactions, unique idempotency constra
 
 ## Tenant isolation design
 
-Membership is the link between a global user identity and a tenant. Tenant-owned business rows will carry `tenant_id`; tenant-scoped queries will require authenticated tenant context. Composite foreign keys and uniqueness constraints will be added to tenant-owned relationships. PostgreSQL row-level security is a planned defense in depth after request and worker tenant context propagation is in place.
+Membership is the link between a global user identity and a tenant. The usage API currently authenticates scoped tenant keys, derives tenant context from the stored key hash, and applies `app.tenant_id` inside transactions. Forced PostgreSQL RLS policies protect the current customer, subscription, meter, raw usage event, and aggregate tables. Composite foreign keys enforce same-tenant customer/subscription/meter references. Local Compose runs API traffic as a restricted role distinct from the migration owner. Other tenant-owned modules and worker context propagation remain future work.
 
-No tenant authorization is implemented in the initial scaffold yet. The health route is intentionally public and contains no tenant data.
+The health route is intentionally public and contains no tenant data. Full user authentication/RBAC and complete platform-wide tenant isolation are not implemented.
+
+The current metering slice is described in [usage metering architecture](usage-metering.md). Current API routes and the OpenAPI contract are in [API documentation](../api/README.md).

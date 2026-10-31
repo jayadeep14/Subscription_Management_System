@@ -23,6 +23,15 @@ An evolving subscription management platform for recurring revenue businesses. T
 - [Technology Stack](#-technology-stack)
 - [Database Schema & Ledger Model](#-database-schema--ledger-model)
 - [API & Webhook Documentation](#-api--webhook-documentation)
+- [Usage Metering Architecture](#usage-metering-architecture)
+- [Ledger and Reconciliation Architecture](#ledger-and-reconciliation-architecture)
+- [GST and E-Invoicing Compliance](#gst-and-e-invoicing-compliance)
+- [Dunning and Involuntary Churn Prevention](#dunning-and-involuntary-churn-prevention)
+- [Revenue Forecasting and Explainability](#revenue-forecasting-and-explainability)
+- [Revenue Leakage Detection](#revenue-leakage-detection)
+- [Multi-Tenant Security Model](#multi-tenant-security-model)
+- [Developer API and Webhooks](#developer-api-and-webhooks)
+- [Reliability and Observability](#reliability-and-observability)
 - [Installation & Local Setup](#-installation--local-setup)
 - [Configuration & Environment Variables](#-configuration--environment-variables)
 - [Background Workers & Automation](#-background-workers--automation)
@@ -89,12 +98,16 @@ The planned analytics module includes MRR, ARR, ARPU, CLV, logo and revenue chur
 - NestJS API with the versioned process health route `GET /api/v1/health`.
 - PostgreSQL and Redis local-service configuration in Docker Compose.
 - Prisma 7 schema for tenants, users, memberships, roles, and permissions.
-- Generated initial PostgreSQL migration for those identity and tenancy tables.
+- Tenant API keys stored as hashes with scopes and expiry/revocation checks.
+- Usage meter, customer, subscription, append-only event, and hourly/daily aggregate schema with an additive migration.
+- `POST /api/v1/usage/events` with tenant-derived API-key scope, idempotency, payload conflict detection, and transactional aggregate updates.
+- `GET /api/v1/usage/summary` with raw-versus-daily aggregate reconciliation over complete UTC-day windows.
+- Seed and API-key CLI commands for an AI usage demo tenant.
 - Prisma PostgreSQL adapter and API startup database connection.
 - BullMQ worker process shell; no business job handlers are registered yet.
 - Environment template and initial architecture, database, and security notes.
 
-Not implemented: registration/login, tenant authorization, RLS, customer/catalog workflows, subscriptions, invoices, payment integrations, dunning, usage, credits, ledger, reconciliation, webhooks, analytics, customer portal, or production deployment configuration.
+Not implemented: user registration/login, customer and catalog management workflows, subscription lifecycle APIs, billing/pricing calculations, invoice generation, usage billing-period snapshots or invoice adjustments, credits, payment integrations, dunning, financial ledger, gateway reconciliation, GST/e-invoicing, webhooks, analytics, customer portal, or production deployment configuration. Customer/subscription rows currently exist only as the minimal references needed by usage ingestion.
 
 ## 🏗️ System Architecture
 
@@ -128,11 +141,11 @@ Dependency versions are pinned in workspace manifests and `pnpm-lock.yaml`. The 
 
 ## 🗄️ Database Schema & Ledger Model
 
-The current schema contains only identity and tenancy foundations: `Tenant`, `User`, `Membership`, `Role`, `Permission`, `MembershipRole`, and `RolePermission`. It does **not** yet contain billing, payment, or ledger tables.
+The current schema contains identity/tenancy foundations plus minimal `Customer`, `Subscription`, `UsageMeter`, append-only `UsageEvent`, `UsageAggregate`, and scoped `TenantApiKey` records. It does **not** yet contain invoice, payment, credit, tax, or ledger tables.
 
 The planned data model will use tenant-aware foreign keys and unique constraints for business entities. Money will use integer minor units or fixed-precision database decimals, never binary floating point. Finalized invoice snapshots and posted ledger entries will be immutable. Each posted journal transaction must balance debits and credits atomically. PostgreSQL RLS is planned as defense in depth after tenant context has been added to API and worker processing.
 
-See the [database design notes](docs/database/README.md). The initial SQL migration is at `apps/api/prisma/migrations/20261031100000_foundation/migration.sql`; it has been generated but not applied in this environment.
+See the [database design notes](docs/database/README.md). SQL migrations are under `apps/api/prisma/migrations`; neither migration has been applied in this environment.
 
 ## 🔌 API & Webhook Documentation
 
@@ -142,7 +155,7 @@ Current route:
 | --- | --- | --- |
 | `GET` | `/api/v1/health` | Returns process status and timestamp |
 
-Customer, product, plan, quotation, subscription, billing, invoice, payment, usage, credit, analytics, and ledger routes are planned only. OpenAPI/Swagger is not configured yet. Incoming or outgoing webhooks are not implemented.
+Customer, product, plan, quotation, subscription lifecycle, billing, invoice, payment, credit, analytics, and ledger routes are planned only. Incoming or outgoing webhooks are not implemented. See the [implemented OpenAPI contract](docs/api/openapi.yaml) and [API notes](docs/api/README.md); Swagger UI is not configured in the running API.
 
 When those APIs are added, public DTOs will be separated from database models and routes will include validation, pagination, authorization, tenant scope, and consistent error responses.
 
@@ -160,9 +173,11 @@ When those APIs are added, public DTOs will be separated from database models an
 2. Start PostgreSQL and Redis: `docker compose up -d postgres redis`.
 3. Install dependencies: `npx pnpm@10.20.0 install`.
 4. Generate Prisma Client: `npx pnpm@10.20.0 db:generate`.
-5. Apply the initial migration: `npx pnpm@10.20.0 db:migrate`.
-6. Start the web app and API: `npx pnpm@10.20.0 dev`.
-7. In another terminal, start the worker shell: `npx pnpm@10.20.0 dev:worker`.
+5. Apply migrations using the migration-owner URL: `npx pnpm@10.20.0 db:migrate`.
+6. Seed the usage demo: `npx pnpm@10.20.0 db:seed`.
+7. Create a scoped API key for the printed tenant ID: `npx pnpm@10.20.0 --filter @brightloop/api api-key:create <tenant-uuid>`.
+8. Start the web app and API: `npx pnpm@10.20.0 dev`.
+9. In another terminal, start the worker shell: `npx pnpm@10.20.0 dev:worker`.
 
 Web app: http://localhost:3000  
 API health: http://localhost:4000/api/v1/health
@@ -177,35 +192,84 @@ Never commit `.env` or use the local Compose credentials in a shared environment
 
 ## ⏱️ Background Workers & Automation
 
-The worker shell connects to the `platform` BullMQ queue and shuts down on SIGINT/SIGTERM. There are no billing, dunning, notification, usage aggregation, or webhook jobs yet. Unknown job types fail explicitly.
+The worker shell connects to the `platform` BullMQ queue and shuts down on SIGINT/SIGTERM. Usage hourly/daily aggregates are currently updated synchronously in the ingestion transaction; there are no billing, dunning, notification, scheduled aggregation, or webhook jobs yet. Unknown worker job types fail explicitly.
 
 The planned event flow uses a PostgreSQL transactional outbox: commit business state and the outbox record together, publish asynchronously, and process at least once with idempotent consumers. Redis locks alone will not protect financial correctness.
 
 ## 🧪 Testing & Quality Assurance
 
-No automated tests have been added yet. The following checks were run for the foundation using Node 22.16.0:
+The following automated checks were run using Node 22.16.0:
 
 - `pnpm -r typecheck` — passed for web, API, and worker.
-- `pnpm -r build` — passed for web, API, and worker.
+- `pnpm -r build` — passed for web, API, and worker before the latest usage extension; rerun after the latest edits is pending.
 - `prisma generate` — passed.
+- `pnpm --filter @brightloop/api test` — 2 usage-metering utility tests passed.
 
-Database migrations were not applied and no integration or end-to-end flows were run because Docker/PostgreSQL are unavailable in the current workspace. Unit, integration, tenant-isolation, billing edge-case, webhook, and browser tests remain planned. Do not interpret build success as production-readiness.
+Database migrations were not applied and no integration or end-to-end flows were run because Docker/PostgreSQL are unavailable in the current workspace. Ingestion transaction, duplicate-request concurrency, RLS, cross-tenant access, worker, billing, webhook, and browser tests remain planned. Do not interpret build success as production-readiness.
 
 ## 🚢 Deployment & DevOps
 
 Docker Compose currently provisions only local PostgreSQL and Redis. It does not build or deploy the application services. CI/CD, production container images, Nginx, metrics, OpenTelemetry, backup/recovery, and deployment procedures are not configured yet. The sub-two-second response objective in the product requirements remains an unmeasured target.
 
+## Usage Metering Architecture
+
+Implemented and pending details are in [usage metering architecture](docs/architecture/usage-metering.md). Raw events are append-only and aggregates are rebuildable projections. Invoice and ledger comparisons and late-usage adjustment documents await their respective modules.
+
+## Ledger and Reconciliation Architecture
+
+**Planned.** Every posted journal transaction will balance debits and credits and remain immutable. Corrections use reversal or compensating entries. Daily reconciliation will compare invoices, payments, refunds, gateway settlements, bank payouts, and ledger entries, creating classified `ReconciliationException` records. No ledger, revenue-recognition schedule, settlement import, or exception admin screen exists yet.
+
+## GST and E-Invoicing Compliance
+
+**Planned, not a compliance claim.** The tax module is intended to support CGST, SGST, IGST, UTGST, cess, B2B/B2C, place of supply, GSTIN checks, tax-inclusive/exclusive pricing, sequential tenant invoice numbering, credit/debit notes, eligible e-invoice submission, and GSTR-1/GSTR-3B reconciliation. Tax calculation, invoice issuance, e-invoice provider submission, and filing reconciliation will be separate workflows. Regulatory obligations and provider integrations require verification before any compliance claim.
+
+## Dunning and Involuntary Churn Prevention
+
+**Planned.** Payment attempt history, failure classification, configurable retry policies, recovery scoring, explanation signals, human overrides, and recovery analytics are future work. Automated recovery actions will remain auditable and should not treat a probability score as a payment fact.
+
+## Revenue Forecasting and Explainability
+
+**Planned.** Forecasts will account for renewal schedules, plan changes, discounts, credits, proration, churn, and uncertain usage revenue. Best/expected/worst scenarios and intervals will be labeled as decision support. Every prediction should retain model version, inputs, timestamp, confidence, explanation, and human override. No forecasting model is implemented.
+
+## Revenue Leakage Detection
+
+**Planned.** A leakage scanner will compare subscriptions, entitlements, usage, invoices, payments, credits, discounts, and ledger postings. Findings will become severity-ranked cases with root cause, financial impact, owner, status, and resolution audit history. No leakage detection currently runs.
+
+## Multi-Tenant Security Model
+
+The usage API derives tenant identity from a scoped API key and checks customer/subscription/meter relationships with composite tenant keys. RLS policies are included for usage-related tenant tables; transactions set `app.tenant_id` before querying them. Local Compose uses a restricted application role, separate from the migration owner. These controls cover only the usage slice. User authentication, full API/service/worker/cache/file/analytics isolation, tenant-aware rate limits, and immutable audit events remain incomplete. See [security baseline](docs/security/baseline.md).
+
+## Developer API and Webhooks
+
+**Partially implemented.** REST routes use `/api/v1`; usage API keys are scoped and money-changing idempotency patterns are planned. The current implemented route contract is in [OpenAPI YAML](docs/api/openapi.yaml). Cursor pagination, full API key lifecycle, webhook subscriptions/signing/retries/DLQ, sandbox data, API analytics, and Swagger UI are future work.
+
+## Reliability and Observability
+
+**Partially implemented.** PostgreSQL transactions protect raw usage ingestion and aggregate updates; unique indexes protect event IDs and tenant idempotency keys. Local Compose healthchecks exist for PostgreSQL and Redis. Distributed locks, outbox publishing, dead-letter management, provider circuit breakers, API/database/queue readiness checks, correlation IDs, metrics, alerting, backups, restore drills, and retention policies remain planned.
+
 ## 🗺️ Roadmap & Feature Priority
 
-1. **Foundation completion:** run PostgreSQL/Redis, apply migration, add readiness checks, structured logging, and configuration validation.
-2. **Identity and tenancy:** registration/login, refresh-token rotation, tenant context, permissions, audit events, and cross-tenant isolation checks.
-3. **Core subscription workflow:** customers, catalog, plans/prices, quotations, subscription state machine, and event history.
-4. **Billing and invoices:** billing periods, discounts, tax snapshots, invoice finalization, idempotency, and scheduled runs.
-5. **Payments:** provider adapter, Razorpay sandbox flow, signature-verified webhook processing, refunds, and reconciliation.
-6. **Advanced billing:** proration, usage event ingestion/aggregation, prepaid credits, and configurable dunning.
-7. **Financial records:** chart of accounts, balanced journals, reversals, settlement matching, and exception resolution.
-8. **Customer and insights:** self-service portal, metric definitions, analytics snapshots, reports, and evaluated forecasting.
-9. **Production readiness:** automated unit/integration/E2E/security tests, performance evaluation, CI/CD, deployment, and recovery documentation.
+1. **Usage metering — active:** ingestion, idempotency, hourly/daily aggregates, and raw-to-aggregate report. Next: billing-period snapshots, invoice/ledger comparison, late-use adjustments, and concurrency integration tests.
+2. **Ledger and reconciliation:** immutable balanced journals, recognition schedules, daily matching, exception workflow.
+3. **GST compliance:** tax engine, invoice sequence, credit/debit notes, e-invoicing integration, and GSTR reconciliation.
+4. **Dunning intelligence:** payment attempts, policy rules, recovery features, explainable scoring, and recovery analytics.
+5. **Revenue leakage:** anomaly checks, severity/risk cases, monthly reports, and alerts.
+6. **Forecasting and churn:** cohort metrics, customer health, model tracking, scenarios, and evaluation.
+7. **Developer/operations platform:** API keys, pagination, webhooks, sandbox, health/metrics, dead letters, backups, security testing.
+8. **Core workflow dependencies:** complete authentication, customers/catalog, plans, quotations, subscriptions, billing, invoices, and payment flows as needed to support the higher priority modules.
+
+## Testing Strategy
+
+The current unit tests cover UTC bucket boundaries and duplicate payload comparison only. Planned verification includes property/unit tests for aggregation and financial calculations, integration tests against PostgreSQL for idempotency/RLS/immutability, concurrency tests for duplicate and simultaneous ingestion, reconciliation fixtures, and end-to-end AI usage → invoice → ledger scenarios. India GST, failed payment/dunning, and forecast demos will be added as those modules are implemented.
+
+## Known Limitations and Future Enhancements
+
+- No PostgreSQL server was available in the workspace, so migrations and the seed script have not been exercised against a live database.
+- Billing-period usage snapshots, pricing evaluation, invoice adjustments, invoices, and ledger posting are not implemented.
+- RLS and tenant API keys exist for the usage slice only; the platform is not yet safe for general multi-tenant production traffic.
+- No GST rules, GSTIN validation provider, e-invoice provider, filing import, payment gateway, dunning, revenue forecasting, or leakage scanner exists.
+- Swagger UI, API rate limiting, queue processors, observability stack, CI, and deployment pipeline are not configured.
+- Seeded meter prices are zero and are demonstration catalog entries, not production prices.
 
 ## 📄 License & Support
 

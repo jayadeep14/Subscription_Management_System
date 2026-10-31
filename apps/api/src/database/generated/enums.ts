@@ -25,3 +25,38 @@ export const MembershipStatus = {
 } as const
 
 export type MembershipStatus = (typeof MembershipStatus)[keyof typeof MembershipStatus]
+
+
+export const SubscriptionStatus = {
+  DRAFT: 'DRAFT',
+  PENDING: 'PENDING',
+  TRIALING: 'TRIALING',
+  ACTIVE: 'ACTIVE',
+  PAST_DUE: 'PAST_DUE',
+  PAUSED: 'PAUSED',
+  SUSPENDED: 'SUSPENDED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+
+export const UsagePricingModel = {
+  FLAT: 'FLAT',
+  TIERED: 'TIERED',
+  VOLUME: 'VOLUME',
+  STAIR_STEP: 'STAIR_STEP',
+  PACKAGE: 'PACKAGE'
+} as const
+
+export type UsagePricingModel = (typeof UsagePricingModel)[keyof typeof UsagePricingModel]
+
+
+export const UsageAggregationGrain = {
+  HOURLY: 'HOURLY',
+  DAILY: 'DAILY',
+  BILLING_PERIOD: 'BILLING_PERIOD'
+} as const
+
+export type UsageAggregationGrain = (typeof UsageAggregationGrain)[keyof typeof UsageAggregationGrain]

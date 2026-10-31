@@ -13,6 +13,7 @@
     "typecheck": "pnpm -r typecheck",
     "db:generate": "pnpm --filter @brightloop/api prisma:generate",
     "db:migrate": "pnpm --filter @brightloop/api prisma:migrate",
+    "db:seed": "pnpm --filter @brightloop/api db:seed",
     "db:studio": "pnpm --filter @brightloop/api prisma:studio",
     "infra:up": "docker compose up -d postgres redis",
     "infra:down": "docker compose down"

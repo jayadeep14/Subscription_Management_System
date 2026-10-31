@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums"
-import type * as Prisma from "../internal/prismaNamespace"
+import type * as $Enums from "../enums.js"
+import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model Tenant
@@ -207,6 +207,12 @@ export type TenantWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   memberships?: Prisma.MembershipListRelationFilter
+  apiKeys?: Prisma.TenantApiKeyListRelationFilter
+  customers?: Prisma.CustomerListRelationFilter
+  subscriptions?: Prisma.SubscriptionListRelationFilter
+  usageMeters?: Prisma.UsageMeterListRelationFilter
+  usageEvents?: Prisma.UsageEventListRelationFilter
+  usageAggregates?: Prisma.UsageAggregateListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
@@ -219,6 +225,12 @@ export type TenantOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   memberships?: Prisma.MembershipOrderByRelationAggregateInput
+  apiKeys?: Prisma.TenantApiKeyOrderByRelationAggregateInput
+  customers?: Prisma.CustomerOrderByRelationAggregateInput
+  subscriptions?: Prisma.SubscriptionOrderByRelationAggregateInput
+  usageMeters?: Prisma.UsageMeterOrderByRelationAggregateInput
+  usageEvents?: Prisma.UsageEventOrderByRelationAggregateInput
+  usageAggregates?: Prisma.UsageAggregateOrderByRelationAggregateInput
 }
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<{
@@ -234,6 +246,12 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   memberships?: Prisma.MembershipListRelationFilter
+  apiKeys?: Prisma.TenantApiKeyListRelationFilter
+  customers?: Prisma.CustomerListRelationFilter
+  subscriptions?: Prisma.SubscriptionListRelationFilter
+  usageMeters?: Prisma.UsageMeterListRelationFilter
+  usageEvents?: Prisma.UsageEventListRelationFilter
+  usageAggregates?: Prisma.UsageAggregateListRelationFilter
 }, "id" | "slug">
 
 export type TenantOrderByWithAggregationInput = {
@@ -274,6 +292,12 @@ export type TenantCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
@@ -286,6 +310,12 @@ export type TenantUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterUncheckedCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventUncheckedCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
@@ -298,6 +328,12 @@ export type TenantUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
@@ -310,6 +346,12 @@ export type TenantUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUncheckedUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUncheckedUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
@@ -395,6 +437,90 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type TenantCreateNestedOneWithoutApiKeysInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutApiKeysInput, Prisma.TenantUncheckedCreateWithoutApiKeysInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutApiKeysInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutApiKeysNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutApiKeysInput, Prisma.TenantUncheckedCreateWithoutApiKeysInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutApiKeysInput
+  upsert?: Prisma.TenantUpsertWithoutApiKeysInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutApiKeysInput, Prisma.TenantUpdateWithoutApiKeysInput>, Prisma.TenantUncheckedUpdateWithoutApiKeysInput>
+}
+
+export type TenantCreateNestedOneWithoutCustomersInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutCustomersInput, Prisma.TenantUncheckedCreateWithoutCustomersInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutCustomersInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutCustomersNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutCustomersInput, Prisma.TenantUncheckedCreateWithoutCustomersInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutCustomersInput
+  upsert?: Prisma.TenantUpsertWithoutCustomersInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutCustomersInput, Prisma.TenantUpdateWithoutCustomersInput>, Prisma.TenantUncheckedUpdateWithoutCustomersInput>
+}
+
+export type TenantCreateNestedOneWithoutSubscriptionsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutSubscriptionsInput, Prisma.TenantUncheckedCreateWithoutSubscriptionsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutSubscriptionsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutSubscriptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutSubscriptionsInput, Prisma.TenantUncheckedCreateWithoutSubscriptionsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutSubscriptionsInput
+  upsert?: Prisma.TenantUpsertWithoutSubscriptionsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutSubscriptionsInput, Prisma.TenantUpdateWithoutSubscriptionsInput>, Prisma.TenantUncheckedUpdateWithoutSubscriptionsInput>
+}
+
+export type TenantCreateNestedOneWithoutUsageMetersInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUsageMetersInput, Prisma.TenantUncheckedCreateWithoutUsageMetersInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsageMetersInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutUsageMetersNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUsageMetersInput, Prisma.TenantUncheckedCreateWithoutUsageMetersInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsageMetersInput
+  upsert?: Prisma.TenantUpsertWithoutUsageMetersInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutUsageMetersInput, Prisma.TenantUpdateWithoutUsageMetersInput>, Prisma.TenantUncheckedUpdateWithoutUsageMetersInput>
+}
+
+export type TenantCreateNestedOneWithoutUsageEventsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUsageEventsInput, Prisma.TenantUncheckedCreateWithoutUsageEventsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsageEventsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutUsageEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUsageEventsInput, Prisma.TenantUncheckedCreateWithoutUsageEventsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsageEventsInput
+  upsert?: Prisma.TenantUpsertWithoutUsageEventsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutUsageEventsInput, Prisma.TenantUpdateWithoutUsageEventsInput>, Prisma.TenantUncheckedUpdateWithoutUsageEventsInput>
+}
+
+export type TenantCreateNestedOneWithoutUsageAggregatesInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUsageAggregatesInput, Prisma.TenantUncheckedCreateWithoutUsageAggregatesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsageAggregatesInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutUsageAggregatesNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUsageAggregatesInput, Prisma.TenantUncheckedCreateWithoutUsageAggregatesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsageAggregatesInput
+  upsert?: Prisma.TenantUpsertWithoutUsageAggregatesInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutUsageAggregatesInput, Prisma.TenantUpdateWithoutUsageAggregatesInput>, Prisma.TenantUncheckedUpdateWithoutUsageAggregatesInput>
+}
+
 export type TenantCreateNestedOneWithoutMembershipsInput = {
   create?: Prisma.XOR<Prisma.TenantCreateWithoutMembershipsInput, Prisma.TenantUncheckedCreateWithoutMembershipsInput>
   connectOrCreate?: Prisma.TenantCreateOrConnectWithoutMembershipsInput
@@ -409,6 +535,510 @@ export type TenantUpdateOneRequiredWithoutMembershipsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutMembershipsInput, Prisma.TenantUpdateWithoutMembershipsInput>, Prisma.TenantUncheckedUpdateWithoutMembershipsInput>
 }
 
+export type TenantCreateWithoutApiKeysInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutApiKeysInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterUncheckedCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventUncheckedCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutApiKeysInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutApiKeysInput, Prisma.TenantUncheckedCreateWithoutApiKeysInput>
+}
+
+export type TenantUpsertWithoutApiKeysInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutApiKeysInput, Prisma.TenantUncheckedUpdateWithoutApiKeysInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutApiKeysInput, Prisma.TenantUncheckedCreateWithoutApiKeysInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutApiKeysInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutApiKeysInput, Prisma.TenantUncheckedUpdateWithoutApiKeysInput>
+}
+
+export type TenantUpdateWithoutApiKeysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutApiKeysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUncheckedUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUncheckedUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutCustomersInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutCustomersInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterUncheckedCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventUncheckedCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutCustomersInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutCustomersInput, Prisma.TenantUncheckedCreateWithoutCustomersInput>
+}
+
+export type TenantUpsertWithoutCustomersInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutCustomersInput, Prisma.TenantUncheckedUpdateWithoutCustomersInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutCustomersInput, Prisma.TenantUncheckedCreateWithoutCustomersInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutCustomersInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutCustomersInput, Prisma.TenantUncheckedUpdateWithoutCustomersInput>
+}
+
+export type TenantUpdateWithoutCustomersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutCustomersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUncheckedUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUncheckedUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutSubscriptionsInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutSubscriptionsInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterUncheckedCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventUncheckedCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutSubscriptionsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutSubscriptionsInput, Prisma.TenantUncheckedCreateWithoutSubscriptionsInput>
+}
+
+export type TenantUpsertWithoutSubscriptionsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutSubscriptionsInput, Prisma.TenantUncheckedUpdateWithoutSubscriptionsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutSubscriptionsInput, Prisma.TenantUncheckedCreateWithoutSubscriptionsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutSubscriptionsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutSubscriptionsInput, Prisma.TenantUncheckedUpdateWithoutSubscriptionsInput>
+}
+
+export type TenantUpdateWithoutSubscriptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutSubscriptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUncheckedUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUncheckedUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutUsageMetersInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutUsageMetersInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventUncheckedCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutUsageMetersInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUsageMetersInput, Prisma.TenantUncheckedCreateWithoutUsageMetersInput>
+}
+
+export type TenantUpsertWithoutUsageMetersInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutUsageMetersInput, Prisma.TenantUncheckedUpdateWithoutUsageMetersInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUsageMetersInput, Prisma.TenantUncheckedCreateWithoutUsageMetersInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutUsageMetersInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutUsageMetersInput, Prisma.TenantUncheckedUpdateWithoutUsageMetersInput>
+}
+
+export type TenantUpdateWithoutUsageMetersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutUsageMetersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUncheckedUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutUsageEventsInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutUsageEventsInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterUncheckedCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutUsageEventsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUsageEventsInput, Prisma.TenantUncheckedCreateWithoutUsageEventsInput>
+}
+
+export type TenantUpsertWithoutUsageEventsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutUsageEventsInput, Prisma.TenantUncheckedUpdateWithoutUsageEventsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUsageEventsInput, Prisma.TenantUncheckedCreateWithoutUsageEventsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutUsageEventsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutUsageEventsInput, Prisma.TenantUncheckedUpdateWithoutUsageEventsInput>
+}
+
+export type TenantUpdateWithoutUsageEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutUsageEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUncheckedUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutUsageAggregatesInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutUsageAggregatesInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.TenantStatus
+  timezone?: string
+  currency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterUncheckedCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutUsageAggregatesInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUsageAggregatesInput, Prisma.TenantUncheckedCreateWithoutUsageAggregatesInput>
+}
+
+export type TenantUpsertWithoutUsageAggregatesInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutUsageAggregatesInput, Prisma.TenantUncheckedUpdateWithoutUsageAggregatesInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUsageAggregatesInput, Prisma.TenantUncheckedCreateWithoutUsageAggregatesInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutUsageAggregatesInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutUsageAggregatesInput, Prisma.TenantUncheckedUpdateWithoutUsageAggregatesInput>
+}
+
+export type TenantUpdateWithoutUsageAggregatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutUsageAggregatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.TenantApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUncheckedUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUncheckedUpdateManyWithoutTenantNestedInput
+}
+
 export type TenantCreateWithoutMembershipsInput = {
   id?: string
   name: string
@@ -418,6 +1048,12 @@ export type TenantCreateWithoutMembershipsInput = {
   currency?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  apiKeys?: Prisma.TenantApiKeyCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutMembershipsInput = {
@@ -429,6 +1065,12 @@ export type TenantUncheckedCreateWithoutMembershipsInput = {
   currency?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  apiKeys?: Prisma.TenantApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutTenantInput
+  usageMeters?: Prisma.UsageMeterUncheckedCreateNestedManyWithoutTenantInput
+  usageEvents?: Prisma.UsageEventUncheckedCreateNestedManyWithoutTenantInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutMembershipsInput = {
@@ -456,6 +1098,12 @@ export type TenantUpdateWithoutMembershipsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  apiKeys?: Prisma.TenantApiKeyUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutMembershipsInput = {
@@ -467,6 +1115,12 @@ export type TenantUncheckedUpdateWithoutMembershipsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  apiKeys?: Prisma.TenantApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutTenantNestedInput
+  usageMeters?: Prisma.UsageMeterUncheckedUpdateManyWithoutTenantNestedInput
+  usageEvents?: Prisma.UsageEventUncheckedUpdateManyWithoutTenantNestedInput
+  usageAggregates?: Prisma.UsageAggregateUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 
@@ -476,10 +1130,22 @@ export type TenantUncheckedUpdateWithoutMembershipsInput = {
 
 export type TenantCountOutputType = {
   memberships: number
+  apiKeys: number
+  customers: number
+  subscriptions: number
+  usageMeters: number
+  usageEvents: number
+  usageAggregates: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memberships?: boolean | TenantCountOutputTypeCountMembershipsArgs
+  apiKeys?: boolean | TenantCountOutputTypeCountApiKeysArgs
+  customers?: boolean | TenantCountOutputTypeCountCustomersArgs
+  subscriptions?: boolean | TenantCountOutputTypeCountSubscriptionsArgs
+  usageMeters?: boolean | TenantCountOutputTypeCountUsageMetersArgs
+  usageEvents?: boolean | TenantCountOutputTypeCountUsageEventsArgs
+  usageAggregates?: boolean | TenantCountOutputTypeCountUsageAggregatesArgs
 }
 
 /**
@@ -499,6 +1165,48 @@ export type TenantCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.MembershipWhereInput
 }
 
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountApiKeysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenantApiKeyWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountCustomersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CustomerWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SubscriptionWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountUsageMetersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UsageMeterWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountUsageEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UsageEventWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountUsageAggregatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UsageAggregateWhereInput
+}
+
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -510,6 +1218,12 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   memberships?: boolean | Prisma.Tenant$membershipsArgs<ExtArgs>
+  apiKeys?: boolean | Prisma.Tenant$apiKeysArgs<ExtArgs>
+  customers?: boolean | Prisma.Tenant$customersArgs<ExtArgs>
+  subscriptions?: boolean | Prisma.Tenant$subscriptionsArgs<ExtArgs>
+  usageMeters?: boolean | Prisma.Tenant$usageMetersArgs<ExtArgs>
+  usageEvents?: boolean | Prisma.Tenant$usageEventsArgs<ExtArgs>
+  usageAggregates?: boolean | Prisma.Tenant$usageAggregatesArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
@@ -549,6 +1263,12 @@ export type TenantSelectScalar = {
 export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "status" | "timezone" | "currency" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
 export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memberships?: boolean | Prisma.Tenant$membershipsArgs<ExtArgs>
+  apiKeys?: boolean | Prisma.Tenant$apiKeysArgs<ExtArgs>
+  customers?: boolean | Prisma.Tenant$customersArgs<ExtArgs>
+  subscriptions?: boolean | Prisma.Tenant$subscriptionsArgs<ExtArgs>
+  usageMeters?: boolean | Prisma.Tenant$usageMetersArgs<ExtArgs>
+  usageEvents?: boolean | Prisma.Tenant$usageEventsArgs<ExtArgs>
+  usageAggregates?: boolean | Prisma.Tenant$usageAggregatesArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -558,6 +1278,12 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "Tenant"
   objects: {
     memberships: Prisma.$MembershipPayload<ExtArgs>[]
+    apiKeys: Prisma.$TenantApiKeyPayload<ExtArgs>[]
+    customers: Prisma.$CustomerPayload<ExtArgs>[]
+    subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+    usageMeters: Prisma.$UsageMeterPayload<ExtArgs>[]
+    usageEvents: Prisma.$UsageEventPayload<ExtArgs>[]
+    usageAggregates: Prisma.$UsageAggregatePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -963,6 +1689,12 @@ readonly fields: TenantFieldRefs;
 export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   memberships<T extends Prisma.Tenant$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  apiKeys<T extends Prisma.Tenant$apiKeysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  customers<T extends Prisma.Tenant$customersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$customersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  subscriptions<T extends Prisma.Tenant$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  usageMeters<T extends Prisma.Tenant$usageMetersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$usageMetersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UsageMeterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  usageEvents<T extends Prisma.Tenant$usageEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$usageEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UsageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  usageAggregates<T extends Prisma.Tenant$usageAggregatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$usageAggregatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UsageAggregatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1414,6 +2146,150 @@ export type Tenant$membershipsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.MembershipScalarFieldEnum | Prisma.MembershipScalarFieldEnum[]
+}
+
+/**
+ * Tenant.apiKeys
+ */
+export type Tenant$apiKeysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TenantApiKey
+   */
+  select?: Prisma.TenantApiKeySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TenantApiKey
+   */
+  omit?: Prisma.TenantApiKeyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantApiKeyInclude<ExtArgs> | null
+  where?: Prisma.TenantApiKeyWhereInput
+  orderBy?: Prisma.TenantApiKeyOrderByWithRelationInput | Prisma.TenantApiKeyOrderByWithRelationInput[]
+  cursor?: Prisma.TenantApiKeyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TenantApiKeyScalarFieldEnum | Prisma.TenantApiKeyScalarFieldEnum[]
+}
+
+/**
+ * Tenant.customers
+ */
+export type Tenant$customersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Customer
+   */
+  select?: Prisma.CustomerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Customer
+   */
+  omit?: Prisma.CustomerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CustomerInclude<ExtArgs> | null
+  where?: Prisma.CustomerWhereInput
+  orderBy?: Prisma.CustomerOrderByWithRelationInput | Prisma.CustomerOrderByWithRelationInput[]
+  cursor?: Prisma.CustomerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CustomerScalarFieldEnum | Prisma.CustomerScalarFieldEnum[]
+}
+
+/**
+ * Tenant.subscriptions
+ */
+export type Tenant$subscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Subscription
+   */
+  select?: Prisma.SubscriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Subscription
+   */
+  omit?: Prisma.SubscriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubscriptionInclude<ExtArgs> | null
+  where?: Prisma.SubscriptionWhereInput
+  orderBy?: Prisma.SubscriptionOrderByWithRelationInput | Prisma.SubscriptionOrderByWithRelationInput[]
+  cursor?: Prisma.SubscriptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SubscriptionScalarFieldEnum | Prisma.SubscriptionScalarFieldEnum[]
+}
+
+/**
+ * Tenant.usageMeters
+ */
+export type Tenant$usageMetersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UsageMeter
+   */
+  select?: Prisma.UsageMeterSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UsageMeter
+   */
+  omit?: Prisma.UsageMeterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UsageMeterInclude<ExtArgs> | null
+  where?: Prisma.UsageMeterWhereInput
+  orderBy?: Prisma.UsageMeterOrderByWithRelationInput | Prisma.UsageMeterOrderByWithRelationInput[]
+  cursor?: Prisma.UsageMeterWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UsageMeterScalarFieldEnum | Prisma.UsageMeterScalarFieldEnum[]
+}
+
+/**
+ * Tenant.usageEvents
+ */
+export type Tenant$usageEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UsageEvent
+   */
+  select?: Prisma.UsageEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UsageEvent
+   */
+  omit?: Prisma.UsageEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UsageEventInclude<ExtArgs> | null
+  where?: Prisma.UsageEventWhereInput
+  orderBy?: Prisma.UsageEventOrderByWithRelationInput | Prisma.UsageEventOrderByWithRelationInput[]
+  cursor?: Prisma.UsageEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UsageEventScalarFieldEnum | Prisma.UsageEventScalarFieldEnum[]
+}
+
+/**
+ * Tenant.usageAggregates
+ */
+export type Tenant$usageAggregatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UsageAggregate
+   */
+  select?: Prisma.UsageAggregateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UsageAggregate
+   */
+  omit?: Prisma.UsageAggregateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UsageAggregateInclude<ExtArgs> | null
+  where?: Prisma.UsageAggregateWhereInput
+  orderBy?: Prisma.UsageAggregateOrderByWithRelationInput | Prisma.UsageAggregateOrderByWithRelationInput[]
+  cursor?: Prisma.UsageAggregateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UsageAggregateScalarFieldEnum | Prisma.UsageAggregateScalarFieldEnum[]
 }
 
 /**
