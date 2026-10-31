@@ -8,7 +8,7 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
 
   constructor() {
     const connectionString = process.env.DATABASE_URL;
-    if (!connectionString) throw new Error('DATABASE_URL is required');
+    if (!connectionString) throw new Error('DATABASE_URL is missing. Copy the repository .env.example to .env, then configure the database connection.');
     this.client = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
   }
 

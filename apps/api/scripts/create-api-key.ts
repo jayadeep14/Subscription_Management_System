@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import '../src/config/environment.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../src/database/generated/client.js';
 import { createHash, randomBytes } from 'node:crypto';

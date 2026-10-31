@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import '../src/config/environment.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Prisma, PrismaClient } from '../src/database/generated/client.js';
 import { setTenantContext } from '../src/database/tenant-context.js';

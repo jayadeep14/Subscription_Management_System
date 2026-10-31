@@ -1,8 +1,12 @@
-import 'dotenv/config';
+import { config } from 'dotenv';
 import { Worker } from 'bullmq';
-import IORedis from 'ioredis';
+import { Redis } from 'ioredis';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const connection = new IORedis(process.env.REDIS_URL ?? 'redis://localhost:6379', {
+config({ path: resolve(dirname(fileURLToPath(import.meta.url)), '../../.env') });
+
+const connection = new Redis(process.env.REDIS_URL ?? 'redis://localhost:6379', {
   maxRetriesPerRequest: null,
 });
 
