@@ -70,6 +70,7 @@ model Role {
   name        String           @db.VarChar(120)
   description String?          @db.VarChar(500)
   assignments MembershipRole[]
+  permissions RolePermission[]
 
   @@unique([tenantId, key])
   @@map("roles")
