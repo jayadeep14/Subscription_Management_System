@@ -16,4 +16,4 @@ erDiagram
 
 Next schema slices should introduce customer/catalog and subscription models with tenant-aware composite relations. Billing models will use integer minor units or database decimals, explicit currency, immutable finalized snapshots, and unique billing-period keys. Ledger entries will be append-only and balanced at transaction commit.
 
-Migrations have not yet been generated. The current schema has not been applied to a PostgreSQL instance.
+An initial SQL migration is committed under `apps/api/prisma/migrations`. It was generated from an empty PostgreSQL schema with Prisma 7.10.1. It has not been applied to a PostgreSQL instance in this environment because Docker is unavailable.
