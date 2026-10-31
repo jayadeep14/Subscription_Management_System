@@ -8,12 +8,13 @@ const modules = [
 export default function Home() {
   return (
     <main className="shell">
-      <header className="topbar"><div className="brand"><span className="brand-mark">B</span><span>brightloop</span></div><span className="environment">Foundation setup</span></header>
+      <header className="topbar"><div className="brand"><span className="brand-mark">B</span><span>brightloop</span></div><Link className="nav-link" href="/features">Explore platform features <span aria-hidden="true">↗</span></Link><span className="environment">Foundation setup</span></header>
       <section className="hero">
         <p className="eyebrow">SUBSCRIPTION OPERATIONS</p>
         <h1>One clear view of your recurring business.</h1>
         <p className="intro">The foundation for managing customers, subscription plans, renewals and billing—with financial records designed to stay auditable.</p>
         <div className="status"><span className="status-dot" /> Local platform foundation is ready to configure</div>
+        <Link className="primary-link" href="/features">View the platform feature tour <span aria-hidden="true">→</span></Link>
       </section>
       <section className="module-grid" aria-label="Platform modules">
         {modules.map(([title, description], index) => <article className="module-card" key={title}><span className="module-number">0{index + 1}</span><h2>{title}</h2><p>{description}</p></article>)}
@@ -22,3 +23,5 @@ export default function Home() {
     </main>
   );
 }
+import Link from 'next/link';
+
